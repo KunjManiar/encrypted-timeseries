@@ -177,9 +177,13 @@ Note: You can install [concurrently](https://www.npmjs.com/package/concurrently)
 ### For Example (Listener on Dev)
 
 ```
-	"emitter": "node src/app.js --prefix emitter-service",
+    "emitter": "node src/app.js --prefix emitter-service",
     "listener": "node src/app.js",
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run emitter\" \"npm run listener\" \"npm run client\"",
 
 ```
+
+## Demo Screenshot
+
+![screenshot](screencapture-localhost-3002-2021-09-27-01_49_07.png)
