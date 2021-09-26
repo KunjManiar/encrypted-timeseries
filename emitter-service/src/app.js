@@ -23,7 +23,10 @@ socket.on("connect", async () => {
       const data = readFile(data_path);
       let count = 0;
       while (true) {
-        socket.emit("timeseries", getData(data, MESSAGE_CONSTANT.FAULTY));
+        socket.emit(
+          "encrypted-timeseries:add",
+          getData(data, MESSAGE_CONSTANT.FAULTY)
+        );
         console.log(new Date());
         await new Promise((resolve) =>
           setTimeout(resolve, MESSAGE_CONSTANT.COOLOFF_IN_SECONDS * 1000)
