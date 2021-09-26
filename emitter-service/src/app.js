@@ -3,12 +3,7 @@ require("dotenv").config();
 const path = require("path");
 
 const { readFile } = require("./libs/read-file");
-const { getRandomData } = require("./libs/random-data");
-const {
-  getObjectWithSecretKeyHash,
-  getEncryptedString,
-  getDecryptedObject,
-} = require("./libs/encryption");
+const { getData } = require("./generate-data");
 
 const io = require("socket.io-client");
 
@@ -21,12 +16,8 @@ socket.on("connect", () => {
   if (socket.connected) {
     const data_path = path.resolve(path.dirname(__filename), "data/data.json");
     const data = readFile(data_path);
-    const object = getRandomData(data.names, data.cities);
 
-    const hashObject = getObjectWithSecretKeyHash(object);
-    const encryptedString = getEncryptedString(hashObject);
-
-    socket.emit("timeseries", encryptedString);
+    socket.emit("timeseries", getData(data));
   } else {
     // ...
   }
