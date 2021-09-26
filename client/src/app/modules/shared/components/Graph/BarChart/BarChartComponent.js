@@ -7,7 +7,6 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-  LabelList,
 } from "recharts";
 const BarChartComponent = ({
   width,
@@ -20,7 +19,6 @@ const BarChartComponent = ({
   yAxisType,
   barDetails,
 }) => {
-  //   return <h1>Hello World</h1>;
   return (
     <div style={{ width: width, height: height }}>
       <BarChart
@@ -50,29 +48,26 @@ const BarChartComponent = ({
               axisLine={false}
               tickLine={false}
               minTickGap={0}
-              width={180}
-              tick={{ fontSize: 14, markerWidth: 3, width: 180 }}
+              width={240}
+              tick={{ fontSize: 14, markerWidth: 3, width: 240 }}
             />
           </>
         )}
-        <Tooltip />
+        <Tooltip
+          viewBox={{ x: 0, y: 0, width: 400, height: 400 }}
+          allowEscapeViewBox={{ x: false, y: false }}
+        />
         <Legend />
         {barDetails.map((detail) => (
           <Bar
-            // style={{ width: "9%" }}
-            // barSize={500}
+            key={detail.dataKey}
             dataKey={detail.dataKey}
             stackId={detail.stackId}
             stroke={detail.stroke}
             fill={detail.fill}
             name={detail.name}
-            // label
-          >
-            {/* <LabelList dataKey={detail.dataKey} position="insideTop" /> */}
-          </Bar>
+          ></Bar>
         ))}
-        {/* <Bar dataKey="successfailure.pv" stackId="a" fill="#8884d8" />
-        <Bar dataKey="uv" stackId="a" fill="#82ca9d" /> */}
       </BarChart>
     </div>
   );

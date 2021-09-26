@@ -7,16 +7,8 @@ import socket from "../../../utils/socket";
 import Loader from "../../shared/components/loader/loader";
 
 import * as successFailureActions from "../store/actions/SuccessFailureAction";
-import AreaChartComponent from "../../shared/components/Graph/AreaChart/AreaChartComponent";
 import LineChartComponent from "../../shared/components/Graph/LineChart/LineChartComponent";
 import BarChartComponent from "../../shared/components/Graph/BarChart/BarChartComponent";
-
-// const data = [
-//   { name: "Group A", value: 400 },
-//   { name: "Group B", value: 300 },
-//   { name: "Group C", value: 300 },
-//   { name: "Group D", value: 200 },
-// ];
 
 const TimeseriesContainer = (props) => {
   const dispatch = useDispatch();
@@ -27,24 +19,25 @@ const TimeseriesContainer = (props) => {
     err,
     error,
   } = useSelector((state) => state.successFailure);
-  console.log("In container");
-  console.log(userSuccessFailures);
-  //   console.log("here");
+
   useEffect(() => {
     socket.emit("timeseries/success-failure:get", "");
     socket.on("timeseries/success-failure", (data) => {
-      //   console.log(data);
       dispatch(successFailureActions.updateSuccessFailure(data));
     });
     socket.on("timeseries/past-10-timestamp", (data) => {
-      //   console.log(data);
       dispatch(successFailureActions.updateTimestampSuccessFailure(data));
     });
     socket.on("timeseries/user-success-failure", (data) => {
-      //   console.log(data);
       dispatch(successFailureActions.updateUserSuccessFailure(data));
     });
-  }, [socket]);
+  }, [socket, dispatch]);
+
+  if (error) {
+    <div>
+      <h3>{err.message}</h3>
+    </div>;
+  }
 
   return (
     <div>
@@ -57,6 +50,7 @@ const TimeseriesContainer = (props) => {
         }}
       >
         <div style={{ width: "30%" }}>
+          <h2>Success vs Failure</h2>
           {!!successFailure && successFailure.data.length ? (
             <PieChartComponent
               width="70%"
@@ -66,10 +60,9 @@ const TimeseriesContainer = (props) => {
           ) : (
             <Loader fullPage={false} />
           )}
-
-          <h2>Success vs Failure</h2>
         </div>
         <div style={{ width: "70%" }}>
+          <h2>Past timestamps </h2>
           {!!timestampSuccessFailures && timestampSuccessFailures.length ? (
             <LineChartComponent
               width="70%"
@@ -83,7 +76,7 @@ const TimeseriesContainer = (props) => {
                   stackId: 1,
                   stroke: "#00C07F",
                   fill: "#00C07F",
-                  name: "success",
+                  name: "Successful",
                 },
                 {
                   type: "monotone",
@@ -91,21 +84,20 @@ const TimeseriesContainer = (props) => {
                   stackId: 1,
                   stroke: "#FF6562",
                   fill: "#FF6562",
-                  name: "failure",
+                  name: "Failure",
                 },
               ]}
             />
           ) : (
             <Loader fullPage={false} />
           )}
-
-          <h2>Past timestamps </h2>
         </div>
       </div>
-      <div>
+      <div style={{ marginTop: 30 }}>
+        <h2>User Success Vs Failure</h2>
         {!!userSuccessFailures && userSuccessFailures.length ? (
           <BarChartComponent
-            width={1100}
+            width={window.innerWidth}
             height={2500}
             data={userSuccessFailures}
             dataKey="name"
@@ -119,14 +111,14 @@ const TimeseriesContainer = (props) => {
                 stackId: "a",
                 stroke: "#00C07F",
                 fill: "#00C07F",
-                name: "success",
+                name: "Successful",
               },
               {
                 dataKey: "successFailure.failure",
                 stackId: "a",
                 stroke: "#FF6562",
                 fill: "#FF6562",
-                name: "failure",
+                name: "Failure",
               },
             ]}
           />

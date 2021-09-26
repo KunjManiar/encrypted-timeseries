@@ -6,8 +6,6 @@ import {
 } from "../../constants/TimeseriesConstants";
 import TimestampSuccessFailureModel from "../../models/TimestampSuccessFailureModel";
 import UserSuccessFailureModel from "../../models/UserSuccessFailureModel";
-// import { searchLocationsAPI } from '../api/search';
-// import { searchConstants } from '../../constants/weather';
 
 export const updateSuccessFailure = ({ err, data }) => {
   return async (dispatch, getState) => {
@@ -17,7 +15,6 @@ export const updateSuccessFailure = ({ err, data }) => {
         err: err,
       });
     } else {
-      console.log(data);
       dispatch({
         type: SUCCESS_FAILURE.UPDATE,
         successFailure: new SuccessFailureModel(data),
@@ -34,7 +31,6 @@ export const updateTimestampSuccessFailure = ({ err, data }) => {
         err: err,
       });
     } else {
-      console.log(data);
       const timestampSuccessFailures = [];
       for (const timestampSuccessFailure of data) {
         timestampSuccessFailures.push(
@@ -57,7 +53,6 @@ export const updateUserSuccessFailure = ({ err, data }) => {
         err: err,
       });
     } else {
-      console.log(data);
       const userSuccessFailures = [];
       for (const userSuccessFailure of data) {
         userSuccessFailures.push(

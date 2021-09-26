@@ -2,7 +2,6 @@ import React from "react";
 import { ResponsiveContainer, PieChart, Pie, Legend, Tooltip } from "recharts";
 
 const PieChartComponent = ({ width, height, data }) => {
-  //   return <h1>Hello World</h1>;
   return (
     <div style={{ width: width, height: height }}>
       <ResponsiveContainer>

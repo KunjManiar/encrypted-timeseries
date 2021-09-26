@@ -10,7 +10,6 @@ import {
 } from "recharts";
 
 const AreaChartComponent = ({ width, height, data, areaDetails, dataKey }) => {
-  //   return <h1>Hello World</h1>;
   return (
     <div style={{ width: width, height: height }}>
       <ResponsiveContainer width="100%" height="100%">
@@ -38,21 +37,6 @@ const AreaChartComponent = ({ width, height, data, areaDetails, dataKey }) => {
               fill={detail.fill}
             />
           ))}
-
-          {/* <Area
-          type="monotone"
-          dataKey="pv"
-          stackId="1"
-          stroke="#82ca9d"
-          fill="#82ca9d"
-        />
-        <Area
-          type="monotone"
-          dataKey="amt"
-          stackId="1"
-          stroke="#ffc658"
-          fill="#ffc658"
-        /> */}
         </AreaChart>
       </ResponsiveContainer>
     </div>
