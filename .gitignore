@@ -80,3 +80,7 @@ emitter-service/.env
 emitter-service/package-lock.json
 emitter-service/node_modules
 
+# listener-service
+listener-service/.env
+listener-service/package-lock.json
+listener-service/node_modules
