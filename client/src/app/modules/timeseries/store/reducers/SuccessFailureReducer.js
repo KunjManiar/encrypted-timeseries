@@ -29,6 +29,7 @@ const SuccessFailureReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         error: true,
+        err: action.err,
       };
 
     // return {

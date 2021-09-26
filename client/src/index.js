@@ -19,7 +19,7 @@ const rootReducer = combineReducers({
   // searchLocation: searcLocationReducer,
   // locations: locationsReducer,
   // contacts: contactsReducer
-  SuccessFailure: SuccessFailureReducer,
+  successFailure: SuccessFailureReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
