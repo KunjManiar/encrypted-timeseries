@@ -42,7 +42,71 @@ const getSuccessFailure = async () => {
   }
 };
 
+const getPast10Timestamp = async () => {
+  try {
+    const details = await TimeSeries.aggregate([
+      {
+        $group: {
+          _id: "$timestamp",
+          success: {
+            $sum: "$success",
+          },
+          failure: {
+            $sum: "$failed",
+          },
+        },
+      },
+      {
+        $sort: {
+          timestamp: -1,
+        },
+      },
+      { $limit: 10 },
+    ]);
+    if (!details.length) {
+      throw new Error("No data");
+    }
+    return {
+      data: details,
+      err: null,
+    };
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
+const getUserSuccessFailure = async () => {
+  try {
+    const details = await TimeSeries.aggregate([
+      {
+        $group: {
+          _id: "$name",
+          success: {
+            $sum: "$success",
+          },
+          failure: {
+            $sum: "$failed",
+          },
+        },
+      },
+    ]);
+    if (!details.length) {
+      throw new Error("No data");
+    }
+    return {
+      data: details,
+      err: null,
+    };
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
 module.exports = {
   addTimeseriesData,
   getSuccessFailure,
+  getPast10Timestamp,
+  getUserSuccessFailure,
 };

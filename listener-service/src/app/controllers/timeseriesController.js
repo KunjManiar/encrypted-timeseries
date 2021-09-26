@@ -40,4 +40,33 @@ const getSuccessFailure = async () => {
   }
 };
 
-module.exports = { addTimeseriesData, getSuccessFailure };
+const getPast10Timestamp = async () => {
+  try {
+    return await Service.getPast10Timestamp();
+  } catch (err) {
+    console.log(err);
+    return {
+      data: null,
+      err: err,
+    };
+  }
+};
+
+const getUserSuccessFailure = async () => {
+  try {
+    return await Service.getUserSuccessFailure();
+  } catch (err) {
+    console.log(err);
+    return {
+      data: null,
+      err: err,
+    };
+  }
+};
+
+module.exports = {
+  addTimeseriesData,
+  getSuccessFailure,
+  getPast10Timestamp,
+  getUserSuccessFailure,
+};
