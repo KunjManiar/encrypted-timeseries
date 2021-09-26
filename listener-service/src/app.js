@@ -11,6 +11,10 @@ const { Server } = require("socket.io");
 const io = new Server(server);
 const mongoose = require("mongoose");
 
+app.get("/", (req, res) => {
+  res.status(200).end();
+});
+
 app.get("/status", (req, res) => {
   res.status(200).end();
 });
@@ -19,7 +23,7 @@ app.head("/status", (req, res) => {
 });
 app.use(cors());
 
-app.use(require("morgan")("development"));
+app.use(require("morgan")("dev"));
 
 const uri =
   `mongodb+srv://${process.env.DATABASE_USERNAME}:` +
@@ -36,7 +40,8 @@ const db = mongoose.connection;
 db.on("error", (error) => console.error(error));
 db.once("open", () => console.log("connected to db"));
 
-require("./socketio")(io);
+require("./socketHandlers")(io);
+app.use(require("./routers"));
 
 app.use((req, res, next) => {
   let err = new Error("Not Found");

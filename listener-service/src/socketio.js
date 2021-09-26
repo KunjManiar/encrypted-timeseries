@@ -1,3 +1,5 @@
+// DEPRECATED
+
 const Controller = require("./app/controllers/TimeseriesController");
 const socketFunction = (io) => {
   io.on("connection", (socket) => {

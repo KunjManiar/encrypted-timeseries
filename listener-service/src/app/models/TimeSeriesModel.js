@@ -13,6 +13,7 @@ const TimeSeriesSchema = new mongoose.Schema(
     },
     timeSeriesData: [
       {
+        _id: 0,
         timestamp: {
           type: Date,
         },

@@ -16,7 +16,8 @@ const addTimeseriesData = async (message) => {
       bulkWriteArray.push(checkHash(object));
       // if (!!validObject) {
       // Add to db
-      // console.log(validObject);
+      // console.log(validObject.updateOne.filter);
+      // console.log(validObject.updateOne.update);
       // }
     }
     console.log(count);
@@ -27,4 +28,16 @@ const addTimeseriesData = async (message) => {
   }
 };
 
-module.exports = { addTimeseriesData };
+const getSuccessFailure = async () => {
+  try {
+    return await Service.getSuccessFailure();
+  } catch (err) {
+    console.log(err);
+    return {
+      data: null,
+      err: err,
+    };
+  }
+};
+
+module.exports = { addTimeseriesData, getSuccessFailure };
