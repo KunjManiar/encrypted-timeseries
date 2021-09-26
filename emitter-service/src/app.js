@@ -6,7 +6,7 @@ const io = require("socket.io-client");
 const { readFile } = require("./libs/read-file");
 const { getData } = require("./generate-data");
 
-const { MESSAGE } = require("./constants/app_constants");
+const { MESSAGE: MESSAGE_CONSTANT } = require("./constants/app_constants");
 
 const socket = io(process.env.EMITTER_URL);
 
@@ -14,24 +14,31 @@ const socket = io(process.env.EMITTER_URL);
 socket.on("connect", async () => {
   console.log(socket.id); // x8WIv7-mJelg7on_ALbx
   // console.log(socket.connected);
-  if (socket.connected) {
-    const data_path = path.resolve(path.dirname(__filename), "data/data.json");
-    const data = readFile(data_path);
-    let count = 0;
-    while (true) {
-      socket.emit("timeseries", getData(data));
-      await new Promise((resolve) =>
-        setTimeout(resolve, MESSAGE.COOLOFF_IN_SECONDS * 1000)
+  try {
+    if (socket.connected) {
+      const data_path = path.resolve(
+        path.dirname(__filename),
+        "data/data.json"
       );
-      console.log(new Date());
-      count++;
-      if (count == 2) {
-        break;
+      const data = readFile(data_path);
+      let count = 0;
+      while (true) {
+        socket.emit("timeseries", getData(data, MESSAGE_CONSTANT.FAULTY));
+        console.log(new Date());
+        await new Promise((resolve) =>
+          setTimeout(resolve, MESSAGE_CONSTANT.COOLOFF_IN_SECONDS * 1000)
+        );
+        count++;
+        if (count == 2) {
+          break;
+        }
       }
+      console.log("BROKEN OUT");
+    } else {
+      // ...
     }
-    console.log("BROKEN OUT");
-  } else {
-    // ...
+  } catch (err) {
+    console.log(err);
   }
 });
 

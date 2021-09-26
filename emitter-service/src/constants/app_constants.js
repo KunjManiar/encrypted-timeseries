@@ -1,9 +1,10 @@
 const MESSAGE = {
   COUNT_OF_MESSAGE: {
-    MIN: 5,
-    MAX: 10,
+    MIN: 49,
+    MAX: 499,
   },
   COOLOFF_IN_SECONDS: 10,
+  FAULTY: 5,
 };
 
 module.exports = {
