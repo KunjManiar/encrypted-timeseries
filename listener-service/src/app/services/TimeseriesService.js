@@ -2,9 +2,7 @@ const TimeSeries = require("../models/TimeSeriesModel");
 
 const addTimeseriesData = async (bulkWriteMessageArray) => {
   try {
-    const timeseries = await TimeSeries.bulkWrite(bulkWriteMessageArray);
-    console.log(timeseries);
-    return timeseries;
+    return await TimeSeries.bulkWrite(bulkWriteMessageArray);
   } catch (err) {
     console.log(err);
     throw err;
@@ -58,7 +56,7 @@ const getPast10Timestamp = async () => {
       },
       {
         $sort: {
-          timestamp: -1,
+          _id: -1,
         },
       },
       { $limit: 10 },
@@ -67,7 +65,7 @@ const getPast10Timestamp = async () => {
       throw new Error("No data");
     }
     return {
-      data: details,
+      data: details.reverse(),
       err: null,
     };
   } catch (err) {

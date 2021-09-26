@@ -29,7 +29,6 @@ const uri =
   `mongodb+srv://${process.env.DATABASE_USERNAME}:` +
   `${process.env.DATABASE_PASSWORD}@${process.env.DATABASE_HOST}/` +
   `${process.env.DATABASE_NAME}?retryWrites=true&w=majority&readPreference=secondaryPreferred`;
-//const uri = 'mongodb://localhost:27017/local';
 
 mongoose.connect(uri, {
   useNewUrlParser: true,

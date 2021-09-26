@@ -3,25 +3,17 @@ const Service = require("../services/TimeseriesService");
 const { getDecryptedObject } = require("../libs/decryption");
 const { checkHash } = require("../libs/validation");
 
-const addTimeseriesData = async (message) => {
+const addTimeseriesData = async (encryptedStrings) => {
   try {
     console.log("Add timeseries Data");
-    const message_arr = message.split("|");
+    const message_arr = encryptedStrings.split("|");
     let count = 0;
     const bulkWriteArray = [];
-    for (message of message_arr) {
+    for (const message of message_arr) {
       count++;
       const object = getDecryptedObject(message);
-      // const validObject = checkHash(object);
       bulkWriteArray.push(checkHash(object));
-      // if (!!validObject) {
-      // Add to db
-      // console.log(validObject.updateOne.filter);
-      // console.log(validObject.updateOne.update);
-      // }
     }
-    console.log(count);
-
     return await Service.addTimeseriesData(bulkWriteArray);
   } catch (err) {
     console.log(err);
@@ -64,9 +56,45 @@ const getUserSuccessFailure = async () => {
   }
 };
 
+const getAllSuccessFailureData = (io, socket) => {
+  try {
+    console.log("In success failure");
+    getSuccessFailure()
+      .then((data) => {
+        io.to("frontend-client").emit("timeseries/success-failure", data);
+      })
+      .catch((err) => {
+        io.to("frontend-client").emit("timeseries/success-failure", err);
+      });
+
+    getPast10Timestamp()
+      .then((data) => {
+        io.to("frontend-client").emit("timeseries/past-10-timestamp", data);
+      })
+      .catch((err) => {
+        io.to("frontend-client").emit("timeseries/past-10-timestamp", err);
+      });
+
+    getUserSuccessFailure()
+      .then((data) => {
+        io.to("frontend-client").emit("timeseries/user-success-failure", data);
+      })
+      .catch((err) => {
+        io.to("frontend-client").emit("timeseries/user-success-failure", err);
+      });
+  } catch (err) {
+    console.log(err);
+    return {
+      data: null,
+      err: err,
+    };
+  }
+};
+
 module.exports = {
   addTimeseriesData,
   getSuccessFailure,
   getPast10Timestamp,
   getUserSuccessFailure,
+  getAllSuccessFailureData,
 };
