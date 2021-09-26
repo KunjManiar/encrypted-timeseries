@@ -17,12 +17,19 @@ socket.on("connect", async () => {
   if (socket.connected) {
     const data_path = path.resolve(path.dirname(__filename), "data/data.json");
     const data = readFile(data_path);
+    let count = 0;
     while (true) {
       socket.emit("timeseries", getData(data));
       await new Promise((resolve) =>
         setTimeout(resolve, MESSAGE.COOLOFF_IN_SECONDS * 1000)
       );
+      console.log(new Date());
+      count++;
+      if (count == 2) {
+        break;
+      }
     }
+    console.log("BROKEN OUT");
   } else {
     // ...
   }
