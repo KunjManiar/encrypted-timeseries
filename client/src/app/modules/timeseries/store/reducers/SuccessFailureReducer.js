@@ -1,43 +1,81 @@
-import { SUCCESS_FAILURE as SUCCESS_FAILURE_CONSTANTS } from "../../constants/TimeseriesConstants";
+import {
+  SUCCESS_FAILURE,
+  TIMESTAMP_SUCCESS_FAILURE,
+  USER_SUCCESS_FAILURE,
+} from "../../constants/TimeseriesConstants";
 
 const initialState = {
-  loading: false,
+  successFailureLoading: false,
+  timestampSuccessFailuresLoading: false,
+  userSuccessFailuresLoading: false,
   error: false,
   successFailure: null,
+  timestampSuccessFailures: [],
+  userSuccessFailures: [],
+  err: null,
 };
 
 const SuccessFailureReducer = (state = initialState, action) => {
   switch (action.type) {
-    case SUCCESS_FAILURE_CONSTANTS.SUCCESS_FAILURE_REQUESTED:
+    case SUCCESS_FAILURE.REQUESTED:
       return {
         ...state,
-        loading: true,
+        successFailureLoading: true,
         error: false,
       };
 
-    case SUCCESS_FAILURE_CONSTANTS.SUCCESS_FAILURE_FETCHED:
-    case SUCCESS_FAILURE_CONSTANTS.SUCCESS_FAILURE_UPDATE:
+    case TIMESTAMP_SUCCESS_FAILURE.REQUESTED:
+      return {
+        ...state,
+        timestampSuccessFailuresLoading: true,
+        error: false,
+      };
+
+    case USER_SUCCESS_FAILURE.REQUESTED:
+      return {
+        ...state,
+        userSuccessFailuresLoading: true,
+        error: false,
+      };
+
+    case SUCCESS_FAILURE.FETCHED:
+    case SUCCESS_FAILURE.UPDATE:
       return {
         ...state,
         successFailure: action.successFailure,
-        loading: false,
+        successFailureLoading: false,
         error: false,
       };
 
-    case SUCCESS_FAILURE_CONSTANTS.SUCCESS_FAILURE_ERROR:
+    case TIMESTAMP_SUCCESS_FAILURE.FETCHED:
+    case TIMESTAMP_SUCCESS_FAILURE.UPDATE:
       return {
         ...state,
-        loading: false,
+        timestampSuccessFailures: action.timestampSuccessFailures,
+        timestampSuccessFailuresLoading: false,
+        error: false,
+      };
+
+    case USER_SUCCESS_FAILURE.FETCHED:
+    case USER_SUCCESS_FAILURE.UPDATE:
+      return {
+        ...state,
+        userSuccessFailures: action.userSuccessFailures,
+        userSuccessFailuresLoading: false,
+        error: false,
+      };
+
+    case SUCCESS_FAILURE.ERROR:
+    case USER_SUCCESS_FAILURE.ERROR:
+    case TIMESTAMP_SUCCESS_FAILURE.ERROR:
+      return {
+        ...state,
+        successFailureLoading: false,
+        timestampSuccessFailuresLoading: false,
+        userSuccessFailuresLoading: false,
         error: true,
         err: action.err,
       };
-
-    // return {
-    // 	...state,
-    // 	successFailure: action.successFailure,
-    // 	loading: false,
-    // 	error: false,
-    // };
     default:
       return state;
   }

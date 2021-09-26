@@ -1,5 +1,11 @@
 import SuccessFailureModel from "../../models/SuccessFailureModel";
-import { SUCCESS_FAILURE as SUCCESS_FAILURE_CONSTANTS } from "../../constants/TimeseriesConstants";
+import {
+  SUCCESS_FAILURE,
+  TIMESTAMP_SUCCESS_FAILURE,
+  USER_SUCCESS_FAILURE,
+} from "../../constants/TimeseriesConstants";
+import TimestampSuccessFailureModel from "../../models/TimestampSuccessFailureModel";
+import UserSuccessFailureModel from "../../models/UserSuccessFailureModel";
 // import { searchLocationsAPI } from '../api/search';
 // import { searchConstants } from '../../constants/weather';
 
@@ -7,14 +13,60 @@ export const updateSuccessFailure = ({ err, data }) => {
   return async (dispatch, getState) => {
     if (err) {
       dispatch({
-        type: SUCCESS_FAILURE_CONSTANTS.SUCCESS_FAILURE_ERROR,
+        type: SUCCESS_FAILURE.ERROR,
         err: err,
       });
     } else {
       console.log(data);
       dispatch({
-        type: SUCCESS_FAILURE_CONSTANTS.SUCCESS_FAILURE_UPDATE,
+        type: SUCCESS_FAILURE.UPDATE,
         successFailure: new SuccessFailureModel(data),
+      });
+    }
+  };
+};
+
+export const updateTimestampSuccessFailure = ({ err, data }) => {
+  return async (dispatch, getState) => {
+    if (err) {
+      dispatch({
+        type: TIMESTAMP_SUCCESS_FAILURE.ERROR,
+        err: err,
+      });
+    } else {
+      console.log(data);
+      const timestampSuccessFailures = [];
+      for (const timestampSuccessFailure of data) {
+        timestampSuccessFailures.push(
+          new TimestampSuccessFailureModel(timestampSuccessFailure)
+        );
+      }
+      dispatch({
+        type: TIMESTAMP_SUCCESS_FAILURE.UPDATE,
+        timestampSuccessFailures: timestampSuccessFailures,
+      });
+    }
+  };
+};
+
+export const updateUserSuccessFailure = ({ err, data }) => {
+  return async (dispatch, getState) => {
+    if (err) {
+      dispatch({
+        type: USER_SUCCESS_FAILURE.ERROR,
+        err: err,
+      });
+    } else {
+      console.log(data);
+      const userSuccessFailures = [];
+      for (const userSuccessFailure of data) {
+        userSuccessFailures.push(
+          new UserSuccessFailureModel(userSuccessFailure)
+        );
+      }
+      dispatch({
+        type: USER_SUCCESS_FAILURE.UPDATE,
+        userSuccessFailures: userSuccessFailures,
       });
     }
   };
