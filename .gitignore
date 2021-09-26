@@ -74,3 +74,9 @@ typings/
 
 # FuseBox cache
 .fusebox/
+
+# emitter-service
+emitter-service/.env
+emitter-service/package-lock.json
+emitter-service/node_modules
+
