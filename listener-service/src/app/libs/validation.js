@@ -14,10 +14,54 @@ const checkHash = (object) => {
   const objString = getStringifyObject(object);
   const hashOfObject = getSha256(objString).toString();
   if (key == hashOfObject) {
-    object["timestamp"] = new Date();
-    // object["secret_key"] = key;
-    return object;
+    return bulkWriteSuccessObj(object);
   }
+  return bulkWriteFailedObj(object);
+};
+
+const bulkWriteSuccessObj = (object) => {
+  const timestamp = new Date();
+  // object["secret_key"] = key;
+  return {
+    updateOne: {
+      filter: {
+        name: object.name,
+        timestamp: new Date(timestamp).setSeconds(0, 0),
+      },
+      update: {
+        $push: {
+          timeSeriesData: {
+            timestamp: timestamp,
+            destination: object.destination,
+            origin: object.origin,
+          },
+        },
+        $inc: {
+          success: 1,
+        },
+      },
+      upsert: true,
+    },
+  };
+};
+
+const bulkWriteFailedObj = (object) => {
+  const timestamp = new Date();
+  // object["secret_key"] = key;
+  return {
+    updateOne: {
+      filter: {
+        name: object.name,
+        timestamp: new Date(timestamp).setSeconds(0, 0),
+      },
+      update: {
+        $inc: {
+          failed: 1,
+        },
+      },
+      upsert: true,
+    },
+  };
 };
 
 module.exports = {

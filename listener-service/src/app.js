@@ -9,6 +9,7 @@ const http = require("http");
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
+const mongoose = require("mongoose");
 
 app.get("/status", (req, res) => {
   res.status(200).end();
@@ -19,6 +20,21 @@ app.head("/status", (req, res) => {
 app.use(cors());
 
 app.use(require("morgan")("development"));
+
+const uri =
+  `mongodb+srv://${process.env.DATABASE_USERNAME}:` +
+  `${process.env.DATABASE_PASSWORD}@${process.env.DATABASE_HOST}/` +
+  `${process.env.DATABASE_NAME}?retryWrites=true&w=majority&readPreference=secondaryPreferred`;
+//const uri = 'mongodb://localhost:27017/local';
+
+mongoose.connect(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+const db = mongoose.connection;
+db.on("error", (error) => console.error(error));
+db.once("open", () => console.log("connected to db"));
 
 require("./socketio")(io);
 
