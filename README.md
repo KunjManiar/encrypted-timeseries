@@ -87,7 +87,7 @@ Structure of Timeseries Model
 A service which connects with emitter over sockets listens for data stream.
 
 - Add connection to `listener-client` room
-- Seprate stream of messages.
+- Seprate stream of messages `|`.
 - Decrypt this messages.
 - Check for hash
   - IF hash matches
